@@ -1,0 +1,79 @@
+﻿<Window x:Class="ClientApp.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClientApp.Views"
+        xmlns:VM ="clr-namespace:ClientApp.ViewModels"
+        xmlns:Conv ="clr-namespace:ClientApp.Converters"
+        mc:Ignorable="d"
+        Title="Client application" Height="720" Width="1280">
+
+    <Window.DataContext>
+        <VM:MainViewModel></VM:MainViewModel>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="9*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel  Background="AliceBlue" Grid.Row="1" Grid.Column="4" Margin="5">
+            <StackPanel Margin="5" MinHeight="50" VerticalAlignment="Stretch" Orientation="Horizontal">
+                <Button Command="{Binding Connect}" FontSize="16" MinWidth="205" Content="Подключиться к серверу" Margin="0 0 50 0" />
+                <Button Command="{Binding Disconnect}"  FontSize="16" MinWidth="205" Content="Отключиться от сервера" />
+            </StackPanel>
+            <StackPanel Margin="5" MinHeight="50" VerticalAlignment="Stretch" Orientation="Horizontal">
+                <TextBox Text="{Binding ServerConnection.HostName, Mode=OneWay}" HorizontalContentAlignment="Center" IsReadOnly="True" VerticalContentAlignment="Center" FontSize="16"  MinWidth="340"/>
+                <Label VerticalAlignment="Center" Content=":" FontSize="16"></Label>
+                <TextBox Text="{Binding ServerConnection.Port, Mode=OneWay}"  HorizontalContentAlignment="Center" IsReadOnly="True" VerticalContentAlignment="Center"  FontSize="16"  MinWidth="100"/>
+            </StackPanel>
+            <StackPanel Margin="5" MinHeight="35" VerticalAlignment="Stretch" Orientation="Horizontal">
+                <Label Margin="0 0 10 0" VerticalAlignment="Center" Content="Текущее состояние" FontSize="16"></Label>
+                <TextBlock  Background="{Binding CanDisconnect, Converter={Conv:BoolToColorConverter}}"  FontSize="16" MinHeight="35"  MinWidth="35"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Background="AliceBlue" Grid.Row="3" Grid.Column="4" Margin="5">
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <Label FontSize="16" Content="Отправлять данные на сервер"/>
+                <CheckBox IsChecked="{Binding IsSending, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" />
+            </StackPanel>
+            <Label Margin="10 0" FontSize="16" Content="Журнал"/>
+            <TextBox Text="{Binding AppLogger.LogText}" IsReadOnly="True" FontSize="16" Margin="10 0" MaxHeight="245" MinHeight="245"
+                 TextWrapping="Wrap"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 />
+        </StackPanel>
+        <StackPanel Background="AliceBlue" Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" Margin="0 25">
+            <Label Margin="10" FontSize="22" HorizontalAlignment="Center" Content="Данные:"/>
+            <StackPanel Margin="10 10" Orientation="Horizontal">
+                <Label Content="Номер счётчика"  Margin="0 0 20 0" VerticalAlignment="Center" FontSize="18"/>
+                <TextBox Text="{Binding CurrentGasValues.Number, Mode = OneWay}" IsReadOnly="True" VerticalContentAlignment="Center" Margin="70 0"  FontSize="18"  MinWidth="270" MinHeight="35"/>
+            </StackPanel>
+            <StackPanel Margin="10 10" Orientation="Horizontal">
+                <Label Content="Дата сбора информации"  Margin="0 0 20 0" VerticalAlignment="Center" FontSize="18"/>
+                <TextBox Text="{Binding CurrentGasValues.Date, Mode = OneWay}" IsReadOnly="True" VerticalContentAlignment="Center" FontSize="18"  MinWidth="270" MinHeight="35"/>
+            </StackPanel>
+            <StackPanel Margin="10 10" Orientation="Horizontal">
+                <Label Content="Значение кислорода"  Margin="0 0 20 0" VerticalAlignment="Center" FontSize="18"/>
+                <TextBox Text="{Binding CurrentGasValues.Oxygen, Mode = OneWay, Converter={Conv:DoubleValueConverter}}" IsReadOnly="True" VerticalContentAlignment="Center" Margin="35 0"   FontSize="18"  MinWidth="268" MinHeight="35"/>
+            </StackPanel>
+            <StackPanel Margin="10 10" Orientation="Horizontal">
+                <Label Content="Значение водорода"  Margin="0 0 20 0" VerticalAlignment="Center" FontSize="18"/>
+                <TextBox Text="{Binding CurrentGasValues.Hydrogen, Mode = OneWay, Converter={Conv:DoubleValueConverter}}" IsReadOnly="True" VerticalContentAlignment="Center" Margin="40 0"  FontSize="18"  MinWidth="270" MinHeight="35"/>
+            </StackPanel>
+            <CheckBox IsChecked="{Binding IsGenerating, UpdateSourceTrigger=PropertyChanged}" Margin="10 10" VerticalAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Content="Генерировать значения"/>
+        </StackPanel>
+    </Grid>
+</Window>
